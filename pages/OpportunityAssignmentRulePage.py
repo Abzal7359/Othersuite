@@ -270,9 +270,9 @@ class OpportunityAssignmentRulePage:
 
     def click_add_new_rule(self):
         # self.driver.refresh()
-        # time.sleep(5)
+        time.sleep(3)
         self.driver.find_element(*self.ADD_NEW_RULE_BUTTON).click()
-        time.sleep(10)
+        time.sleep(3)
 
 
 

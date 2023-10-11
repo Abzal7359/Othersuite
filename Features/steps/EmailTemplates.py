@@ -9,6 +9,7 @@ import time
 
 @when(u'click on settings gear image')
 def step_impl(context):
+    time.sleep(3)
     context.PUP = ProjectUpdatePage(context.driver)
     context.PUP.click_settings_button()
 
