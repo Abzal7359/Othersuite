@@ -31,7 +31,7 @@ def step_impl(context):
     wait.until(EC.visibility_of_element_located((By.ID, 'templateName'))).send_keys(name)
     context.driver.find_element(By.ID, "subject").send_keys("Pay in Time")
     context.driver.find_element(By.XPATH, "//button[text()=' Placeholder ']").click()
-    context.driver.find_element(By.XPATH, "//h6[normalize-space()='First Name']").click()
+    context.driver.find_element(By.XPATH, "(//app-select-dropdown/div/div/div/div/label)").click()
     time.sleep(3)
     context.driver.find_element(By.XPATH, "(//*[name()='svg'][@class='w-4 h-4'])[2]").click()
     wait.until(EC.visibility_of_element_located((By.XPATH, '//div[2]/div[1]/div[3]/div/div/div/input'))).click()
@@ -99,6 +99,7 @@ def step_impl(context):
 
 @Then(u'validate email template deleted or not')
 def step_impl(context):
+
     flag = True
     ele = context.driver.find_elements(By.XPATH, "//tbody/tr/td[1]/span")
     for i in range(1, len(ele) + 1):
