@@ -20,28 +20,23 @@ def step_impl(context):
     wait = WebDriverWait(context.driver, 30)
     wait.until(EC.element_to_be_clickable((By.XPATH, "//a[text()='Email Templates']"))).click()
     time.sleep(2)
-    #clicking add template
+    # clicking add template
     wait.until(EC.element_to_be_clickable((By.ID, 'openModal'))).click()
-
-
 
 
 @when(u'fill email template details')
 def step_impl(context):
     global name
-    name="Payment Template"
+    name = "Payment Template"
     wait.until(EC.visibility_of_element_located((By.ID, 'templateName'))).send_keys(name)
-    context.driver.find_element(By.ID,"subject").send_keys("Pay in Time")
-    context.driver.find_element(By.XPATH,"//button[text()=' Placeholder ']").click()
-    context.driver.find_element(By.XPATH,"//h6[normalize-space()='First Name']").click()
+    context.driver.find_element(By.ID, "subject").send_keys("Pay in Time")
+    context.driver.find_element(By.XPATH, "//button[text()=' Placeholder ']").click()
+    context.driver.find_element(By.XPATH, "//h6[normalize-space()='First Name']").click()
     time.sleep(3)
-    context.driver.find_element(By.XPATH,"(//*[name()='svg'][@class='w-4 h-4'])[2]").click()
+    context.driver.find_element(By.XPATH, "(//*[name()='svg'][@class='w-4 h-4'])[2]").click()
     wait.until(EC.visibility_of_element_located((By.XPATH, '//div[2]/div[1]/div[3]/div/div/div/input'))).click()
-    context.driver.find_element(By.XPATH,"(//button[normalize-space()='Save'])").click()
+    context.driver.find_element(By.XPATH, "(//button[normalize-space()='Save'])").click()
     time.sleep(2)
-
-
-
 
 
 @when(u'save email template')
@@ -65,20 +60,18 @@ def step_impl(context):
     wait.until(EC.element_to_be_clickable((By.XPATH, "//span[normalize-space()='Send Email']"))).click()
 
 
-
-
-
 @then(u'Verify whether the template you created is present in the templates selection')
 def step_impl(context):
-    flag=False
+    flag = False
     wait.until(EC.element_to_be_clickable((By.XPATH, "//span[contains(text(),'Templates')]"))).click()
-    elements=context.driver.find_elements(By.XPATH,"//app-select-dropdown/div/div/div/div")
+    elements = context.driver.find_elements(By.XPATH, "//app-select-dropdown/div/div/div/div")
     for i in elements:
-        if i.text== name:
-            flag=True
+        if i.text == name:
+            flag = True
 
             break
     assert flag
+
 
 @when(u'close modal')
 def step_impl(context):
@@ -90,27 +83,75 @@ def step_impl(context):
     wait.until(EC.element_to_be_clickable((By.XPATH, "//a[text()='Email Templates']"))).click()
     time.sleep(2)
 
+
 @when(u'click on delete on email template')
 def step_impl(context):
-    ele=context.driver.find_elements(By.XPATH,"//tbody/tr/td[1]/span")
-    for i in range(1,len(ele)+1):
-        c=context.driver.find_element(By.XPATH,f"//tbody/tr[{i}]/td[1]/span").text
-        if c== name:
-            context.driver.find_element(By.XPATH, f"//tbody/tr[{i}]/td[4]/div//*[name()='svg']").click()
-            context.driver.find_element(By.XPATH,"//button[normalize-space()='Delete']").click()
-            context.driver.find_element(By.XPATH,"(//button[normalize-space()='Yes'])[1]").click()
-            time.sleep(3)
-            break
-
-@Then(u'validate email template deleted or not')
-def step_impl(context):
-    flag=True
     ele = context.driver.find_elements(By.XPATH, "//tbody/tr/td[1]/span")
     for i in range(1, len(ele) + 1):
         c = context.driver.find_element(By.XPATH, f"//tbody/tr[{i}]/td[1]/span").text
         if c == name:
-            flag=False
+            context.driver.find_element(By.XPATH, f"//tbody/tr[{i}]/td[4]/div//*[name()='svg']").click()
+            context.driver.find_element(By.XPATH, "//button[normalize-space()='Delete']").click()
+            context.driver.find_element(By.XPATH, "(//button[normalize-space()='Yes'])[1]").click()
+            time.sleep(3)
             break
 
 
+@Then(u'validate email template deleted or not')
+def step_impl(context):
+    flag = True
+    ele = context.driver.find_elements(By.XPATH, "//tbody/tr/td[1]/span")
+    for i in range(1, len(ele) + 1):
+        c = context.driver.find_element(By.XPATH, f"//tbody/tr[{i}]/td[1]/span").text
+        if c == name:
+            flag = False
+            break
+
+    wait.until(EC.element_to_be_clickable((By.XPATH, "//div[contains(text(),'Settings')]"))).click()
     assert flag
+
+
+@when(u'click disable on template')
+def step_impl(context):
+    ele = context.driver.find_elements(By.XPATH, "//tbody/tr/td[1]/span")
+    for i in range(1, len(ele) + 1):
+        c = context.driver.find_element(By.XPATH, f"//tbody/tr[{i}]/td[1]/span").text
+        if c == name:
+            context.driver.find_element(By.XPATH, f"//tbody/tr[{i}]/td[1]/div/span").click()
+            time.sleep(3)
+            break
+
+
+@Then(u'Verify whether the template you disabled is not present in the templates selection')
+def step_impl(context):
+    flag = True
+    wait.until(EC.element_to_be_clickable((By.XPATH, "//span[contains(text(),'Templates')]"))).click()
+    elements = context.driver.find_elements(By.XPATH, "//app-select-dropdown/div/div/div/div")
+    for i in elements:
+        if i.text == name:
+            flag = False
+
+            break
+    assert flag
+
+
+@when(u'click on edit and update it')
+def step_impl(context):
+    ele = context.driver.find_elements(By.XPATH, "//tbody/tr/td[1]/span")
+    for i in range(1, len(ele) + 1):
+        c = context.driver.find_element(By.XPATH, f"//tbody/tr[{i}]/td[1]/span").text
+        if c == name:
+            context.driver.find_element(By.XPATH, f"//tbody/tr[{i}]/td[4]/div//*[name()='svg']").click()
+            context.driver.find_element(By.XPATH, "//button[normalize-space()='Edit']").click()
+            time.sleep(2)
+            context.driver.find_element(By.XPATH, " //div[@class='angular-editor-textarea']").clear()
+            context.driver.find_element(By.XPATH, "//button[normalize-space()='Update']").click()
+            time.sleep(2)
+            break
+
+
+@Then(u'validate the toaster of update')
+def step_impl(context):
+    cc = context.driver.find_element(By.XPATH,
+                                     "(//p[normalize-space()='Email template details updated successfully'])[1]").text
+    assert cc == 'Email template details updated successfully'
